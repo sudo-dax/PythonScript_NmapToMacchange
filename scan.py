@@ -22,6 +22,6 @@ Subnet = ".".join(IP_arr) + "/24"
 # Start Network Scan
 print('Scannig Network for Devices')
 print(' ')
-os.system("sudo nmap -sP " + Subnet + """ | awk '/Nmap scan report for/{printf $5;}/MAC Address:/{print " => "$3;}' | sort >> ips_macs_test.txt""")
+os.system("sudo nmap -sP " + Subnet + """ | awk '/Nmap scan report for/{printf $5;}/MAC Address:/{print " => "$3;}' | sort >> ips_macs.txt""")
 
 print('Scan complete! ~~ Output in ips_macs_py.txt')
