@@ -40,19 +40,19 @@ mac_ad = c.most_common()[-1][0]
 print(f"Chainging MAC to -1 Common on Network {mac_ad}")
 
 print("Bringing down WiFi Adapter")
-os.system("sudo ip link set wlan0 down")
+os.system(f"sudo ip link set {adapter} down")
 
 print("Bringing down Network Manager")
 os.system("sudo systemctl stop NetworkManager")
 os.system("sudo systemctl disable NetworkManager")
 
 print("Changing MAC")
-os.system(f"sudo macchanger -m {mac_ad} wlan0")
+os.system(f"sudo macchanger -m {mac_ad} {adapter}")
 
 print("Bringing up Network Manager")
 os.system("sudo systemctl enable NetworkManager")
 os.system("sudo systemctl start NetworkManager")
 
 print("Bringing down WiFi Adapter")
-os.system("sudo ip link set wlan0 up")
+os.system(f"sudo ip link set {adapter} up")
 print("Mac Change Complete!")
