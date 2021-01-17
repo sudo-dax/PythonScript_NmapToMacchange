@@ -8,14 +8,12 @@ import socket
 # Clear Screen
 subprocess.call('clear', shell=True)
 
-
-
-print('Scannig Network for Devices')
-print(' ')
-
 # Get Subnet
 adapter = subnet.get_adapter_names()[-1]
 Subnet = subnet.get_subnets(adapter)[0]
+
+print(f'Scanning {adapter} Network for Devices')
+print(' ')
 
 # Start Network Scan
 print('Scannig Network for Devices')
