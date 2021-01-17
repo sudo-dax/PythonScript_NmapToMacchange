@@ -6,14 +6,14 @@ import subprocess
 import collections
 import socket
 
+import subnet
+
 # Clear Screen
 subprocess.call('clear', shell=True)
 
-# Get Subnet IP
-IP = (([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("1.1.1.1", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0]
-IP_arr = IP.split('.')
-IP_arr[-1] = "1"
-Subnet = ".".join(IP_arr) + "/24"
+# Get Subnet
+adapter = subnet.get_adapter_names()[-1]
+Subnet = subnet.get_subnets(adapter)[0]
 
 # Start Network Scan
 print('Scannig Network for Devices')
