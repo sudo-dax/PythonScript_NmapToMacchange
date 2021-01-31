@@ -6,17 +6,17 @@ import subprocess
 import collections
 import socket
 
+import subnet
+
 # Clear Screen
 subprocess.call('clear', shell=True)
 
-# Get Subnet IP
-IP = (([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")] or [[(s.connect(("1.1.1.1", 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) + ["no IP found"])[0]
-IP_arr = IP.split('.')
-IP_arr[-1] = "1"
-Subnet = ".".join(IP_arr) + "/24"
+# Get Subnet
+adapter = subnet.get_adapter_names()[-1]
+Subnet = subnet.get_subnets(adapter)[0]
 
 # Start Network Scan
-print('Scannig Network for Devices')
+print(f'Scanning {adapter} Network for Devices')
 print(' ')
 os.system("sudo nmap -sP " + Subnet + """ | awk '/Nmap scan report for/{printf $5;}/MAC Address:/{print " => "$3;}' | sort >> ips_macs_py.txt""")
 print('Scan complete! ~~ Output in ips_macs_py.txt')
@@ -40,19 +40,19 @@ mac_ad = c.most_common()[-1][0]
 print(f"Chainging MAC to -1 Common on Network {mac_ad}")
 
 print("Bringing down WiFi Adapter")
-os.system("sudo ip link set wlan0 down")
+os.system(f"sudo ip link set {adapter} down")
 
 print("Bringing down Network Manager")
 os.system("sudo systemctl stop NetworkManager")
 os.system("sudo systemctl disable NetworkManager")
 
 print("Changing MAC")
-os.system(f"sudo macchanger -m {mac_ad} wlan0")
+os.system(f"sudo macchanger -m {mac_ad} {adapter}")
 
 print("Bringing up Network Manager")
 os.system("sudo systemctl enable NetworkManager")
 os.system("sudo systemctl start NetworkManager")
 
 print("Bringing down WiFi Adapter")
-os.system("sudo ip link set wlan0 up")
+os.system(f"sudo ip link set {adapter} up")
 print("Mac Change Complete!")
